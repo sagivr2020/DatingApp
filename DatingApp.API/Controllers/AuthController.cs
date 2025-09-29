@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
@@ -60,8 +61,9 @@ namespace DatingApp.API.Controllers
                 new Claim(ClaimTypes.Name, userFromRepo.Username)
             };
 
-            // create security key
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            // create security key from environment variable
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "fallback-secret-key-for-development-only";
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
             
             // hashing the key
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

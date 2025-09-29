@@ -5,11 +5,11 @@ namespace DatingApp.API.DTO
 {
     public class PhotoForCreationDTO
     {
-        public string Url { get; set; }
-        public IFormFile File { get; set; }
-        public string Description { get; set; }
+        public string Url { get; set; } = string.Empty;
+        public IFormFile File { get; set; } = null!;
+        public string Description { get; set; } = string.Empty;
         public DateTime DateAdded { get; set; }
-        public string PublicId { get; set; }
+        public string PublicId { get; set; } = string.Empty;
 
         public PhotoForCreationDTO()
         {

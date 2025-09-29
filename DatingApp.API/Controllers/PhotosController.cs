@@ -61,6 +61,12 @@ namespace DatingApp.API.Controllers
 
             var file = photoForCreationDto.File;
 
+            // Validate file input
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file provided");
+            }
+
             var uploadResult = new ImageUploadResult();
  
             if (file.Length > 0){
@@ -75,6 +81,18 @@ namespace DatingApp.API.Controllers
 
                     uploadResult = _cloudinary.Upload(uploadParams);
                 }
+            }
+
+            // Check if upload was successful
+            if (uploadResult.Error != null)
+            {
+                return BadRequest($"Upload failed: {uploadResult.Error.Message}");
+            }
+
+            // Ensure we have valid results from Cloudinary
+            if (uploadResult.Url == null || string.IsNullOrEmpty(uploadResult.PublicId))
+            {
+                return BadRequest("Upload failed: Invalid response from Cloudinary");
             }
 
             photoForCreationDto.Url = uploadResult.Url.ToString();

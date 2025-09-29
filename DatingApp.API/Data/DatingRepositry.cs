@@ -67,7 +67,7 @@ namespace DatingApp.API.Data
 
             if (userParams.Likees)
             {
-                var userLikees = await GetUserLikes(userParams.userId, userParams.Likers);
+                var userLikees = await GetUserLikes(userParams.userId, userParams.Likees);
                 users = users.Where(u => userLikees.Contains(u.Id));
             }
 

@@ -40,7 +40,13 @@ export class PhotoEditorComponent implements OnInit {
       maxFileSize: 10 * 1024 * 1024
     });
 
-    this.uploader.onAfterAddingFile = (file) => {file.withCredentials = false; };
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
+
+    this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+      form.append('Description', 'Uploaded with ng2-file-upload');
+    };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
@@ -59,6 +65,11 @@ export class PhotoEditorComponent implements OnInit {
           localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
         }
       }
+    };
+
+    this.uploader.onErrorItem = (item, response, status, headers) => {
+      console.error('Upload failed:', response);
+      this.alertify.error('Photo upload failed');
     };
   }
 
